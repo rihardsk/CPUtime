@@ -121,12 +121,12 @@ var SchedullerCommon = function () {
 				_availableProcessList.push(process);
 			}
 		}
-		if (!runCpu(_availableProcessList) && _incomingProcessList.length == 0) {
+		if (!r.RunCpu(_availableProcessList) && _incomingProcessList.length == 0) {
 			r.Stop();
 		}
 	}
 
-	var runCpu = function (processList) {
-		// plânotâja kods nâks ðeit - atgrieþ false, ja bija jâdarbina idle process
+	r.RunCpu = function (processList) {
+		// plânotâja kods nâks ðeit mantotajâs klasçs - atgrieþ false, ja bija jâdarbina idle process
 	}
 }
