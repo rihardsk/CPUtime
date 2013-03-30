@@ -13,7 +13,7 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 
 	var Initialize = function () {
 		_remainder = $(r.RemainderContainer).Append("<div class='bar " + r.Name + "' />");
-		$(_remainder).width = getRemainderWidth(r.Length);
+		$(_remainder).width(getRemainderWidth(r.Length));
 	}
 
 	var getRemainderWidth = function (time) {
@@ -34,10 +34,10 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 			return;
 		}
 
-		$(_remainder).width = getRemainderWidth(r.RemaindingTime);
+		$(_remainder).width(getRemainderWidth(r.RemaindingTime));
 
 		var run = $(r.RunContainer).Append("<div class='run " + r.Name + "' />");
-		$(run).width = getRunWidth(time);
+		$(run).width(getRunWidth(time));
 		_runs.push({ element: run, time: time });
 	}
 
@@ -51,11 +51,11 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 			return;
 		}
 
-		$(_remainder).width = getRemainderWidth(r.RemaindingTime);
+		$(_remainder).width(getRemainderWidth(r.RemaindingTime));
 
 		var run = _runs[_runs.length - 1];
 		run.time += time;
-		$(run.element).width = getRunWidth(run.time);
+		$(run.element).width(getRunWidth(run.time));
 	}
 
 
@@ -67,8 +67,8 @@ var SchedullerCommon = function () {
 	var _processList = [];
 	var _availableProcessList = [];
 	var _incomingProcessList = [];
-	var _remainderContainer = $("#processList").first();
-	var _runContainer = $("#progressBar").first();
+	var _remainderContainer = $("#processList").get(0);
+	var _runContainer = $("#progressBar").get(0);
 	var _timer = {};
 	var _ticksPassed = 0;
 	var _tickDuration = -1;
@@ -127,6 +127,6 @@ var SchedullerCommon = function () {
 	}
 
 	var runCpu = function (processList) {
-		// plânotâja kods nâks ðeit - atgrieþ false, ja viss jau padarîts
+		// plânotâja kods nâks ðeit - atgrieþ false, ja bija jâdarbina idle process
 	}
 }
