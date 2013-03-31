@@ -1,74 +1,74 @@
 var Process = function(name, length, startTime, priority, remainderContainer, runContainer){
 	var r = this;
-	r.Name = name;
-	r.Length = length;
-	r.RemaindingTime = length;
-	r.StartTime = startTime;
-	r.Priority = priority;
-	r.RemainderContainer = remainderContainer;
-	r.RunContainer = runContainer;
+	this.Name = name;
+	this.Length = length;
+	this.RemaindingTime = length;
+	this.StartTime = startTime;
+	this.Priority = priority;
+	this.RemainderContainer = remainderContainer;
+	this.RunContainer = runContainer;
 	var _remainder = {};
 	var _runs = [];
 
 
-	r.Initialize = function () {
-		_remainder = $(r.RemainderContainer).Append("<div class='bar " + r.Name + "' />");
-		$(_remainder).width(getRemainderWidth(r.Length));
+	this.Initialize = function () {
+		_remainder = $("<div class='bar " + this.Name + "' />").appendTo(this.RemainderContainer).get(0);
+		$(_remainder).width(getRemainderWidth(this.Length));
 	}
 
 	var getRemainderWidth = function (time) {
-		if (r.Name == "idle") {
+		if (this.Name == "idle") {
 			return 0;
 		}
 		return time;
 	}
 
 	var getRunWidth = function (time) {
-		if (r.Name == "idle") {
+		if (this.Name == "idle") {
 			return 0;
 		}
 		return time;
 	}
 
-	r.Run = function (time) {
-		r.RemaindingTime -= time;
-		if (r.RemaindingTime < 0) {
-			time += r.RemaindingTime;
-			r.RemaindingTime = 0;
+	this.Run = function (time) {
+		this.RemaindingTime -= time;
+		if (this.RemaindingTime < 0) {
+			time += this.RemaindingTime;
+			this.RemaindingTime = 0;
 		}
 		if (time <= 0) {
 			return false;
 		}
 
-		$(_remainder).width(getRemainderWidth(r.RemaindingTime));
+		$(_remainder).width(getRemainderWidth(this.RemaindingTime));
 
-		var run = $(r.RunContainer).Append("<div class='run " + r.Name + "' />");
+		var run = $("<div class='run " + this.Name + "' />").appendTo(this.RunContainer).get(0);
 		$(run).width(getRunWidth(time));
 		_runs.push({ element: run, time: time });
 
-		if (r.RemaindingTime < 0) {
+		if (this.RemaindingTime == 0) {
 			return "done";
 		}
 		return true;
 	}
 
-	r.Continue = function (time) {
-		r.RemaindingTime -= time;
-		if (r.RemaindingTime < 0) {
-			time += r.RemaindingTime;
-			r.RemaindingTime = 0;
+	this.Continue = function (time) {
+		this.RemaindingTime -= time;
+		if (this.RemaindingTime < 0) {
+			time += this.RemaindingTime;
+			this.RemaindingTime = 0;
 		}
 		if (time <= 0) {
 			return false;
 		}
 
-		$(_remainder).width(getRemainderWidth(r.RemaindingTime));
+		$(_remainder).width(getRemainderWidth(this.RemaindingTime));
 
 		var run = _runs[_runs.length - 1];
 		run.time += time;
 		$(run.element).width(getRunWidth(run.time));
 
-		if (r.RemaindingTime < 0) {
+		if (this.RemaindingTime == 0) {
 			return "done";
 		}
 		return true;
@@ -80,26 +80,30 @@ var SchedullerCommon = function () {
 	var _processList = [];
 	var _availableProcessList = [];
 	var _incomingProcessList = [];
-	var _remainderContainer = $("#processList").get(0);
-	var _runContainer = $("#progressBar").get(0);
+	var _remainderContainer;// = $("#processList").get(0);
+	var _runContainer;// = $("#progressBar").get(0);
 	var _timer = {};
 	var _ticksPassed = 0;
 	var _tickDuration = -1;
-	var _idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer);
+	var _idleProcess; //= new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer);
 	var _lastProcessIndex = -1; // number or "idle"
 
-	r.Initialize = function (processList) {
+	this.Initialize = function (processList) {
+		_remainderContainer = $("#processList").get(0);
+		_runContainer = $("#progressBar").get(0);
 		$(_remainderContainer).empty();
 		$(_runContainer).empty();
 
-		_processList = r.ParseProcessList(processList);
+		_processList = this.ParseProcessList(processList);
 		_processList.sort(function (a, b) { return a.StartTime - b.StartTime; });
 		for (var i = 0; i < _processList.length; i++) {
 			_incomingProcessList.push(_processList[i]);
 		}
+		_idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer);
+		_idleProcess.Initialize();
 	};
 
-	r.ParseProcessList = function (input) {
+	this.ParseProcessList = function (input) {
 		var parsed = [];
 
 		var lines = input.split("\n");
@@ -108,48 +112,51 @@ var SchedullerCommon = function () {
 			var words = lines[i].split(" ");
 			var process = new Process(words[1], words[2], words[0], words[3], _remainderContainer, _runContainer);
 			process.Initialize();
-			parsed.push();
+			parsed.push(process);
 		}
 
 		return parsed;
 	}
 
-	r.Start = function (tickDuration) {
+	this.Start = function (tickDuration) {
 		if (tickDuration) {
 			_tickDuration = tickDuration;
 		}
-		_timer = setInterval(tick, tickDuration);
+		var r = this;
+		_timer = setInterval(function () { tick.call(r);  }, tickDuration);
 	}
 
-	r.Pause = function () {
+	this.Pause = function () {
 		clearInterval(_timer);
 	}
 
-	r.Stop = function () {
+	this.Stop = function () {
 		clearInterval(_timer);
 		_ticksPassed = 0;
 	}
 
 	var tick = function () {
 		for (var i = 0; i < _incomingProcessList.length; i++) {
-			if (_incomingProcessList[i].StartTime == _ticksPassed) {
-				var process = _incomingProcessList.pop();
+			var process = _incomingProcessList[i];
+			if (process.StartTime == _ticksPassed) {
+				_incomingProcessList.splice(i,1);
 				i--; // nâkamajiem elementiem samazinâs indekss
 				_availableProcessList.push(process);
 			}
 		}
-		if (!r.RunCpu(_availableProcessList) && _incomingProcessList.length == 0) {
-			r.Stop();
+		var result = this.RunCpu(_availableProcessList);
+		if ((!result || result == "done") && _incomingProcessList.length == 0) {
+			this.Stop();
 		}
 		_ticksPassed++;
 	}
 
 	// runs the CPU for 1 cycle, returns "done" if all processes are done executing in the result
-	r.RunCpu = function (processList) {
+	this.RunCpu = function (processList) {
 		// plânotâja kods nâks ðeit mantotajâs klasçs
 	}
 
-	r.RunProcess = function (index, time) {
+	this.RunProcess = function (index, time) {
 		if (_lastProcessIndex == index) {
 			return _availableProcessList[index].Continue(time);
 		}
@@ -157,7 +164,7 @@ var SchedullerCommon = function () {
 		return _availableProcessList[index].Run(time);
 	}
 
-	r.RunIdle = function (time) {
+	this.RunIdle = function (time) {
 		if (_lastProcessIndex == "idle") {
 			return _idleProcess.Continue(time);
 		}

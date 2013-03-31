@@ -1,17 +1,16 @@
 ﻿var fcfs = function () {
-	var r = this;
 	var executeIndex = 0;
 
-	r.RunCpu = function (processList) {
+	this.RunCpu = function (processList) {
 		// te nāk first come first served loģika
 		if (executeIndex >= processList.length) {
-			r.RunIdle(1);
+			this.RunIdle(1);
 			return false;
 		}
 
 		var process = processList[executeIndex];
 
-		var result = r.RunProcess(executeIndex);
+		var result = this.RunProcess(executeIndex,1);
 
 		if (result == "done") {
 			executeIndex++;
