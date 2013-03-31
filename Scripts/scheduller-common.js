@@ -11,16 +11,22 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 	var _runs = [];
 
 
-	var Initialize = function () {
+	r.Initialize = function () {
 		_remainder = $(r.RemainderContainer).Append("<div class='bar " + r.Name + "' />");
 		$(_remainder).width(getRemainderWidth(r.Length));
 	}
 
 	var getRemainderWidth = function (time) {
+		if (r.Name == "idle") {
+			return 0;
+		}
 		return time;
 	}
 
 	var getRunWidth = function (time) {
+		if (r.Name == "idle") {
+			return 0;
+		}
 		return time;
 	}
 
@@ -31,7 +37,7 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 			r.RemaindingTime = 0;
 		}
 		if (time <= 0) {
-			return;
+			return false;
 		}
 
 		$(_remainder).width(getRemainderWidth(r.RemaindingTime));
@@ -39,6 +45,11 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 		var run = $(r.RunContainer).Append("<div class='run " + r.Name + "' />");
 		$(run).width(getRunWidth(time));
 		_runs.push({ element: run, time: time });
+
+		if (r.RemaindingTime < 0) {
+			return "done";
+		}
+		return true;
 	}
 
 	r.Continue = function (time) {
@@ -48,7 +59,7 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 			r.RemaindingTime = 0;
 		}
 		if (time <= 0) {
-			return;
+			return false;
 		}
 
 		$(_remainder).width(getRemainderWidth(r.RemaindingTime));
@@ -56,10 +67,12 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 		var run = _runs[_runs.length - 1];
 		run.time += time;
 		$(run.element).width(getRunWidth(run.time));
+
+		if (r.RemaindingTime < 0) {
+			return "done";
+		}
+		return true;
 	}
-
-
-	Initialize();
 }
 
 var SchedullerCommon = function () {
@@ -72,6 +85,8 @@ var SchedullerCommon = function () {
 	var _timer = {};
 	var _ticksPassed = 0;
 	var _tickDuration = -1;
+	var _idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer);
+	var _lastProcessIndex = -1; // number or "idle"
 
 	r.Initialize = function (processList) {
 		$(_remainderContainer).empty();
@@ -91,7 +106,9 @@ var SchedullerCommon = function () {
 		for (var i = 0; i < lines.length; i++) {
 			// rindiòas formâts - <ieraðanâs laiks> <nosaukums> <izpildes laiks> <prioritâte>
 			var words = lines[i].split(" ");
-			parsed.push(new Process(words[1], words[2], words[0], words[3], _remainderContainer, _runContainer));
+			var process = new Process(words[1], words[2], words[0], words[3], _remainderContainer, _runContainer);
+			process.Initialize();
+			parsed.push();
 		}
 
 		return parsed;
@@ -124,9 +141,27 @@ var SchedullerCommon = function () {
 		if (!r.RunCpu(_availableProcessList) && _incomingProcessList.length == 0) {
 			r.Stop();
 		}
+		_ticksPassed++;
 	}
 
+	// runs the CPU for 1 cycle, returns "done" if all processes are done executing in the result
 	r.RunCpu = function (processList) {
-		// plânotâja kods nâks ðeit mantotajâs klasçs - atgrieþ false, ja bija jâdarbina idle process
+		// plânotâja kods nâks ðeit mantotajâs klasçs
+	}
+
+	r.RunProcess = function (index, time) {
+		if (_lastProcessIndex == index) {
+			return _availableProcessList[index].Continue(time);
+		}
+		_lastProcessIndex = index;
+		return _availableProcessList[index].Run(time);
+	}
+
+	r.RunIdle = function (time) {
+		if (_lastProcessIndex == "idle") {
+			return _idleProcess.Continue(time);
+		}
+		_lastProcessIndex = "idle";
+		return _idleProcess.Run(time);
 	}
 }
