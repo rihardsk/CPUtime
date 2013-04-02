@@ -1,13 +1,13 @@
-var Process = function (name, length, startTime, priority, remainderContainer, runContainer) {
+ï»¿var Process = function (name, length, startTime, priority, remainderContainer, runContainer) {
 	/// <summary>
 	/// Procesa klase
 	/// </summary>
 	/// <param name="name"> Procesa nosaukums </param>
 	/// <param name="length"> Procesa izpildes laiks </param>
-	/// <param name="startTime"> Procesa ierağanâs laiks </param>
-	/// <param name="priority"> Procesa prioritâte </param>
-	/// <param name="remainderContainer"> DOM elements, kur attçlot palikuğâ laika stabiòu </param>
-	/// <param name="runContainer"> DOM elements, kur likt klât izpildîtâ laika stabiòu </param>
+	/// <param name="startTime"> Procesa ieraÅ¡anÄs laiks </param>
+	/// <param name="priority"> Procesa prioritÄte </param>
+	/// <param name="remainderContainer"> DOM elements, kur attÄ“lot palikuÅ¡Ä laika stabiÅ†u </param>
+	/// <param name="runContainer"> DOM elements, kur likt klÄt izpildÄ«tÄ laika stabiÅ†u </param>
 	this.Name = name;
 	this.Length = length;
 	this.RemaindingTime = length;
@@ -21,7 +21,7 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 
 	this.Initialize = function () {
 		/// <summary>
-		/// Izveido palikuğâ laika stabiòu
+		/// Izveido palikuÅ¡Ä laika stabiÅ†u
 		/// </summary>
 		_remainder = $("<div class='bar " + this.Name + "' />").appendTo(this.RemainderContainer).get(0);
 		$(_remainder).width(getRemainderWidth(this.Length));
@@ -29,10 +29,10 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 
 	var getRemainderWidth = function (time) {
 		/// <summary>
-		/// Pârvçrğ izpildes laiku atlikuğâ laika stabiòa garumâ
+		/// PÄrvÄ“rÅ¡ izpildes laiku atlikuÅ¡Ä laika stabiÅ†a garumÄ
 		/// </summary>
 		/// <param name="time"> Izpildes laiks </param>
-		/// <returns type="int"> Stabiòa garums pikseïos </returns>
+		/// <returns type="int"> StabiÅ†a garums pikseÄ¼os </returns>
 		if (this.Name == "idle") {
 			return 0;
 		}
@@ -41,10 +41,10 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 
 	var getRunWidth = function (time) {
 		/// <summary>
-		/// Pârvçrğ izpildes laiku izpildîtâ laika stabiòa garumâ
+		/// PÄrvÄ“rÅ¡ izpildes laiku izpildÄ«tÄ laika stabiÅ†a garumÄ
 		/// </summary>
 		/// <param name="time"> Izpildes laiks </param>
-		/// <returns type="int"> Stabiòa garums pikseïos </returns>
+		/// <returns type="int"> StabiÅ†a garums pikseÄ¼os </returns>
 		if (this.Name == "idle") {
 			return 0;
 		}
@@ -53,13 +53,13 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 
 	this.Run = function (time) {
 		/// <summary>
-		/// Darbina procesu, pievienojot jaunu izpildes stabiòu un samazinot atlikuğâ laika stabiòu
+		/// Darbina procesu, pievienojot jaunu izpildes stabiÅ†u un samazinot atlikuÅ¡Ä laika stabiÅ†u
 		/// </summary>
 		/// <param name="time"> Izpildes laiks </param>
 		/// <returns type="bool or 'idle'">
 		/// "done" - process beidza darbu,
-		/// true - process darbojâs, bet nebeidza darbu,
-		/// false - process nevarçja izpildîties
+		/// true - process darbojÄs, bet nebeidza darbu,
+		/// false - process nevarÄ“ja izpildÄ«ties
 		/// </returns>
 		this.RemaindingTime -= time;
 		if (this.RemaindingTime < 0) {
@@ -84,13 +84,13 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 
 	this.Continue = function (time) {
 		/// <summary>
-		/// Darbina procesu, pagarinot iepriekğçjo izpildes stabiòu un samazinot izpildes laika stabiòu
+		/// Darbina procesu, pagarinot iepriekÅ¡Ä“jo izpildes stabiÅ†u un samazinot izpildes laika stabiÅ†u
 		/// </summary>
 		/// <param name="time"> Izpildes laiks </param>
 		/// <returns type="bool or 'idle'">
 		/// "done" - process beidza darbu,
-		/// true - process darbojâs, bet nebeidza darbu,
-		/// false - process nevarçja izpildîties
+		/// true - process darbojÄs, bet nebeidza darbu,
+		/// false - process nevarÄ“ja izpildÄ«ties
 		/// </returns>
 		this.RemaindingTime -= time;
 		if (this.RemaindingTime < 0) {
@@ -116,21 +116,21 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 
 var SchedullerCommon = function () {
 	/// <summary>
-	/// Bâzes klase CPU laika plânotâjam
+	/// BÄzes klase CPU laika plÄnotÄjam
 	/// </summary>
 
 	/// <var> Visu procesu saraksts </var>
 	this._processList = [];
 	/// <var> Pieejamo nepabeigto procesu saraksts </var>
 	this._availableProcessList = [];
-	/// <var> Vçl nepieejamo procesu saraksts </var>
+	/// <var> VÄ“l nepieejamo procesu saraksts </var>
 	this._incomingProcessList = [];
 	/// <var> Pabeigto procesu saraksts </var>
 	this._finishedProcessList = [];
 	var _remainderContainer;
 	var _runContainer;
 	var _timer = {};
-	/// <var> Pagâjuğais laiks </var>
+	/// <var> PagÄjuÅ¡ais laiks </var>
 	this._ticksPassed = 0;
 	var _tickDuration = -1;
 	var _idleProcess;
@@ -142,7 +142,7 @@ var SchedullerCommon = function () {
 		/// </summary>
 		/// <param name="processList">
 		/// Teksts - procesu saraksts.
-		/// Rindiòas formâts - [ierağanâs laiks] [nosaukums] [izpildes laiks] [prioritâte]
+		/// RindiÅ†as formÄts - [ieraÅ¡anÄs laiks] [nosaukums] [izpildes laiks] [prioritÄte]
 		/// </param>
 		_remainderContainer = $("#processList").get(0);
 		_runContainer = $("#progressBar").get(0);
@@ -166,11 +166,11 @@ var SchedullerCommon = function () {
 
 	this.ParseProcessList = function (input) {
 		/// <summary>
-		/// Pârsç tekstu par procesu sarakstu
+		/// PÄrsÄ“ tekstu par procesu sarakstu
 		/// </summary>
 		/// <param name="input">
 		/// Teksts - procesu saraksts.
-		/// Rindiòas formâts - [ierağanâs laiks] [nosaukums] [izpildes laiks] [prioritâte]
+		/// RindiÅ†as formÄts - [ieraÅ¡anÄs laiks] [nosaukums] [izpildes laiks] [prioritÄte]
 		/// </param>
 		/// <returns type=""> Procesu saraksts </returns>
 		var parsed = [];
@@ -188,9 +188,9 @@ var SchedullerCommon = function () {
 
 	this.Start = function (tickDuration) {
 		/// <summary>
-		/// Sâk vai turpina darbinât procesoru
+		/// SÄk vai turpina darbinÄt procesoru
 		/// </summary>
-		/// <param name="tickDuration"> Cik milisekundes attçlot vienu procesora ciklu (optional) </param>
+		/// <param name="tickDuration"> Cik milisekundes attÄ“lot vienu procesora ciklu (optional) </param>
 		if (tickDuration) {
 			_tickDuration = tickDuration;
 		}
@@ -200,14 +200,14 @@ var SchedullerCommon = function () {
 
 	this.Pause = function () {
 		/// <summary>
-		/// Pauzç procesora darbu
+		/// PauzÄ“ procesora darbu
 		/// </summary>
 		clearInterval(_timer);
 	}
 
 	this.Stop = function () {
 		/// <summary>
-		/// Pârtrauc procesora darbu
+		/// PÄrtrauc procesora darbu
 		/// </summary>
 		clearInterval(_timer);
 		this._ticksPassed = 0;
@@ -215,32 +215,32 @@ var SchedullerCommon = function () {
 
 	var tick = function () {
 		/// <summary>
-		/// Darbîbas viena CPU 'cikla' laikâ
+		/// DarbÄ«bas viena CPU 'cikla' laikÄ
 		/// </summary>
 
-		// pievieno visus brîvos procesus
+		// pievieno visus brÄ«vos procesus
 		for (var i = 0; i < this._incomingProcessList.length; i++) {
 			var process = this._incomingProcessList[i];
 			if (process.StartTime == this._ticksPassed) {
 				this._incomingProcessList.splice(i, 1);
-				i--; // nâkamajiem elementiem samazinâs indekss
+				i--; // nÄkamajiem elementiem samazinÄs indekss
 				this._availableProcessList.push(process);
 			}
 		}
 
 		var result = this.RunCpu();
 
-		// pârvieto visus pabeiguğos procesus
+		// pÄrvieto visus pabeiguÅ¡os procesus
 		for (var i = 0; i < this._availableProcessList.length; i++) {
 			var process = this._availableProcessList[i];
 			if (process.RemaindingTime == 0) {
 				this._availableProcessList.splice(i, 1);
-				i--; // nâkamajiem elementiem samazinâs indekss
+				i--; // nÄkamajiem elementiem samazinÄs indekss
 				this._finishedProcessList.push(process);
 			}
 		}
 		//if ((!result || result == "done") && _incomingProcessList.length == 0) {
-		if (this._availableProcessList.length == 0 && this._incomingProcessList.length == 0) { // ğâdi vienkârğâk
+		if (this._availableProcessList.length == 0 && this._incomingProcessList.length == 0) { // Å¡Ädi vienkÄrÅ¡Äk
 			this.Stop();
 			return;
 		}
@@ -249,27 +249,27 @@ var SchedullerCommon = function () {
 
 	this.RunCpu = function () {
 		/// <summary>
-		/// Plânotâja darbîbas viena cikla laikâ
+		/// PlÄnotÄja darbÄ«bas viena cikla laikÄ
 		/// </summary>
 		/// <returns type="bool or 'done'">
-		/// 'done' - visi procesi beiguği darbu,
-		/// true - pçdçjais process sekmîgi izpildîjâs, bet darbu nebeidza,
-		/// false - nâcâs darbinât idle procesu
+		/// 'done' - visi procesi beiguÅ¡i darbu,
+		/// true - pÄ“dÄ“jais process sekmÄ«gi izpildÄ«jÄs, bet darbu nebeidza,
+		/// false - nÄcÄs darbinÄt idle procesu
 		/// </returns>
 
-		// plânotâja kods nâks ğeit mantotajâs klasçs
+		// plÄnotÄja kods nÄks Å¡eit mantotajÄs klasÄ“s
 	}
 
 	this.RunProcess = function (index, time) {
 		/// <summary>
-		/// Atvieglo procesa darbinâğanu. Automâtiski turpina vai arî sâk no jauna
+		/// Atvieglo procesa darbinÄÅ¡anu. AutomÄtiski turpina vai arÄ« sÄk no jauna
 		/// </summary>
-		/// <param name="index"> Procesa indekss iekğ _availableProcessList </param>
+		/// <param name="index"> Procesa indekss iekÅ¡ _availableProcessList </param>
 		/// <param name="time"> Izpildes laiks </param>
 		/// <returns type="bool or 'idle'">
 		/// "done" - process beidza darbu,
-		/// true - process darbojâs, bet nebeidza darbu,
-		/// false - process nevarçja izpildîties
+		/// true - process darbojÄs, bet nebeidza darbu,
+		/// false - process nevarÄ“ja izpildÄ«ties
 		/// </returns>
 		var process = this._availableProcessList[index];
 		if (_lastProcessName == process.Name) {
@@ -281,10 +281,10 @@ var SchedullerCommon = function () {
 
 	this.RunIdle = function (time) {
 		/// <summary>
-		/// Atvieglo idle procesa darbinâğanu. Automâtiski turpina vai arî sâk no jauna
+		/// Atvieglo idle procesa darbinÄÅ¡anu. AutomÄtiski turpina vai arÄ« sÄk no jauna
 		/// </summary>
 		/// <param name="time"> Izpildes laiks </param>
-		/// <returns type="bool"> Vienmçr true </returns>
+		/// <returns type="bool"> VienmÄ“r true </returns>
 		if (_lastProcessName == "idle") {
 			return _idleProcess.Continue(time);
 		}
