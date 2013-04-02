@@ -1,22 +1,15 @@
 ﻿var fcfs = function () {
-	var executeIndex = 0;
-
-	this.RunCpu = function (processList) {
+	this.RunCpu = function () {
 		// te nāk first come first served loģika
-		if (executeIndex >= processList.length) {
+		var processList = this._availableProcessList; // te ir pieejami visi bāzes klases member (this.asdf)
+		if (processList.length <= 0) {
 			this.RunIdle(1);
 			return false;
 		}
 
-		var process = processList[executeIndex];
+		var result = this.RunProcess(0,1);
 
-		var result = this.RunProcess(executeIndex,1);
-
-		if (result == "done") {
-			executeIndex++;
-		}
-
-		if (executeIndex >= processList.length) {
+		if (result == "done" && processList.length == 0) {
 			return "done";
 		}
 

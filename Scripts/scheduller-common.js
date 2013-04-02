@@ -76,17 +76,17 @@ var Process = function(name, length, startTime, priority, remainderContainer, ru
 }
 
 var SchedullerCommon = function () {
-	var r = this;
-	var _processList = [];
-	var _availableProcessList = [];
-	var _incomingProcessList = [];
+	this._processList = [];
+	this._availableProcessList = [];
+	this._incomingProcessList = [];
+	this._finishedProcessList = [];
 	var _remainderContainer;
 	var _runContainer;
 	var _timer = {};
-	var _ticksPassed = 0;
+	this._ticksPassed = 0;
 	var _tickDuration = -1;
 	var _idleProcess;
-	var _lastProcessIndex = -1; // == number or "idle"
+	var _lastProcessName = "";
 
 	this.Initialize = function (processList) {
 		_remainderContainer = $("#processList").get(0);
@@ -95,15 +95,15 @@ var SchedullerCommon = function () {
 		// clean up
 		$(_remainderContainer).empty();
 		$(_runContainer).empty();
-		_ticksPassed = 0;
-		_processList = [];
-		_incomingProcessList = [];
-		_availableProcessList = [];
+		this._ticksPassed = 0;
+		this._processList = [];
+		this._incomingProcessList = [];
+		this._availableProcessList = [];
 
-		_processList = this.ParseProcessList(processList);
-		_processList.sort(function (a, b) { return a.StartTime - b.StartTime; });
-		for (var i = 0; i < _processList.length; i++) {
-			_incomingProcessList.push(_processList[i]);
+		this._processList = this.ParseProcessList(processList);
+		this._processList.sort(function (a, b) { return a.StartTime - b.StartTime; });
+		for (var i = 0; i < this._processList.length; i++) {
+			this._incomingProcessList.push(this._processList[i]);
 		}
 		_idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer);
 		_idleProcess.Initialize();
@@ -138,44 +138,56 @@ var SchedullerCommon = function () {
 
 	this.Stop = function () {
 		clearInterval(_timer);
-		_ticksPassed = 0;
+		this._ticksPassed = 0;
 	}
 
 	var tick = function () {
-		for (var i = 0; i < _incomingProcessList.length; i++) {
-			var process = _incomingProcessList[i];
-			if (process.StartTime == _ticksPassed) {
-				_incomingProcessList.splice(i,1);
+		for (var i = 0; i < this._incomingProcessList.length; i++) {
+			var process = this._incomingProcessList[i];
+			if (process.StartTime == this._ticksPassed) {
+				this._incomingProcessList.splice(i, 1);
 				i--; // nâkamajiem elementiem samazinâs indekss
-				_availableProcessList.push(process);
+				this._availableProcessList.push(process);
 			}
 		}
-		var result = this.RunCpu(_availableProcessList);
-		if ((!result || result == "done") && _incomingProcessList.length == 0) {
+
+		var result = this.RunCpu();
+
+		for (var i = 0; i < this._availableProcessList.length; i++) {
+			var process = this._availableProcessList[i];
+			if (process.RemaindingTime == 0) {
+				this._availableProcessList.splice(i, 1);
+				i--; // nâkamajiem elementiem samazinâs indekss
+				this._finishedProcessList.push(process);
+			}
+		}
+		//if ((!result || result == "done") && _incomingProcessList.length == 0) {
+		if (this._availableProcessList.length == 0 && this._incomingProcessList.length == 0) { // ðâdi vienkârðâk
 			this.Stop();
 			return;
 		}
-		_ticksPassed++;
+		this._ticksPassed++;
 	}
 
 	// runs the CPU for 1 cycle, returns "done" if all processes are done executing in the result
-	this.RunCpu = function (processList) {
+	this.RunCpu = function () {
 		// plânotâja kods nâks ðeit mantotajâs klasçs
 	}
 
 	this.RunProcess = function (index, time) {
-		if (_lastProcessIndex == index) {
-			return _availableProcessList[index].Continue(time);
+		var process = this._availableProcessList[index];
+		if (_lastProcessName == process.Name) {
+			return process.Continue(time);
 		}
-		_lastProcessIndex = index;
-		return _availableProcessList[index].Run(time);
+		_lastProcessName = process.Name;
+		return process.Run(time);
 	}
 
 	this.RunIdle = function (time) {
-		if (_lastProcessIndex == "idle") {
+		if (_lastProcessName == "idle") {
 			return _idleProcess.Continue(time);
 		}
-		_lastProcessIndex = "idle";
+		_lastProcessName = "idle";
 		return _idleProcess.Run(time);
 	}
 }
