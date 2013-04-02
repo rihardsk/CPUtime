@@ -80,19 +80,25 @@ var SchedullerCommon = function () {
 	var _processList = [];
 	var _availableProcessList = [];
 	var _incomingProcessList = [];
-	var _remainderContainer;// = $("#processList").get(0);
-	var _runContainer;// = $("#progressBar").get(0);
+	var _remainderContainer;
+	var _runContainer;
 	var _timer = {};
 	var _ticksPassed = 0;
 	var _tickDuration = -1;
-	var _idleProcess; //= new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer);
-	var _lastProcessIndex = -1; // number or "idle"
+	var _idleProcess;
+	var _lastProcessIndex = -1; // == number or "idle"
 
 	this.Initialize = function (processList) {
 		_remainderContainer = $("#processList").get(0);
 		_runContainer = $("#progressBar").get(0);
+
+		// clean up
 		$(_remainderContainer).empty();
 		$(_runContainer).empty();
+		_ticksPassed = 0;
+		_processList = [];
+		_incomingProcessList = [];
+		_availableProcessList = [];
 
 		_processList = this.ParseProcessList(processList);
 		_processList.sort(function (a, b) { return a.StartTime - b.StartTime; });
@@ -147,6 +153,7 @@ var SchedullerCommon = function () {
 		var result = this.RunCpu(_availableProcessList);
 		if ((!result || result == "done") && _incomingProcessList.length == 0) {
 			this.Stop();
+			return;
 		}
 		_ticksPassed++;
 	}

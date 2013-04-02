@@ -1,6 +1,9 @@
 ﻿$(document).ready(function () {
+	var scheduler;
 	$("#runButton").click(function () {
-		var scheduler = new fcfs();
+		if (!scheduler) {
+			scheduler = new fcfs();
+		}
 		var text = $("#input").val();
 		var speed = $("#speed").val();
 		scheduler.Initialize(text);
