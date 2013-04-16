@@ -177,6 +177,9 @@ var SchedullerCommon = function () {
 
 		var lines = input.split("\n");
 		for (var i = 0; i < lines.length; i++) {
+			if (!lines[i]) {
+				continue;
+			}
 			var words = lines[i].split(" ");
 			var process = new Process(words[1], words[2], words[0], words[3], _remainderContainer, _runContainer);
 			process.Initialize();
