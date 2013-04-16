@@ -1,9 +1,10 @@
 ﻿$(document).ready(function () {
 	// kad DOM ielādēts, pievienojam event listeneri pogai
 	var scheduler;
-	$("#runButton").click(function () {
+	$(":button").click(function () {
 		if (!scheduler) {
-			scheduler = new fcfs();
+			if (this.id == "runButtonFCFS") { scheduler = new fcfs();}
+			else if (this.id == "runButtonRR") { scheduler = new rr();}
 		}
 		var text = $("#input").val();
 		var speed = $("#speed").val();

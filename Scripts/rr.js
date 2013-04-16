@@ -39,4 +39,4 @@
 }
 
 // mantojās no SchedullerCommon
-fcfs.prototype = new SchedullerCommon();
+rr.prototype = new SchedullerCommon();
