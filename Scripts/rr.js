@@ -2,7 +2,8 @@
 	/// <summary>
 	/// Laika plānotājs ar round robin algoritmu
 	/// </summary>
-	var timeQuantum=5;
+	var timeQuantum = 5;
+	var usedTime = 0;
 	this.RunCpu = function () {
 		/// <summary>
 		/// Plānotāja darbības viena cikla laikā
@@ -20,20 +21,20 @@
 			return false;
 		}
 		
-		for (var i=0; i<timeQuantum; i++ ){
-			var result = this.RunProcess(0,1);
-			if (result == "done") break;
-		}
-		
-		if (result != "done") {
+		if (usedTime > 4) {
 			this._availableProcessList.push(this._availableProcessList[0]);
 			this._availableProcessList.splice(0, 1);
+			usedTime = 0;
 		}
+		
+		var result = this.RunProcess(0,1);
+		usedTime++;
+		if (result == "done") usedTime = 0;
 		
 		if (result == "done" && processList.length == 0) {
 			return "done";
 		}
-
+		
 		return true;
 	}
 }
