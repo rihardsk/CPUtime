@@ -15,4 +15,18 @@
 		scheduler.Initialize(text);
 		scheduler.Start(speed);
 	});
+
+	var mouseEnter = function () {
+		var myClass = $(this).attr("class");
+		var classes = myClass.split(" ");
+		$("." + classes[1]).addClass("highlight");
+	};
+	var mouseLeave = function () {
+		var myClass = $(this).attr("class");
+		var classes = myClass.split(" ");
+		$("." + classes[1]).removeClass("highlight");
+	};
+
+	$("#processList,#progressBar").on("mouseenter", ".bar,.run", mouseEnter);
+	$("#processList,#progressBar").on("mouseleave", ".bar,.run", mouseLeave);
 });

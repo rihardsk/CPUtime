@@ -20,7 +20,6 @@
 	var _remainder = {};
 	var _runs = [];
 
-
 	this.Initialize = function () {
 		/// <summary>
 		/// Izveido palikušā laika stabiņu
