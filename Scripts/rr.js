@@ -1,9 +1,14 @@
-﻿var rr = function () {
+﻿var rr = function (kvants) {
 	/// <summary>
 	/// Laika plānotājs ar round robin algoritmu
 	/// </summary>
-	var timeQuantum = 5;
 	var usedTime = 0;
+	var timeQuantum;
+	if (kvants > 0)
+		timeQuantum = kvants
+	else
+		timeQuantum = 5;
+		
 	this.RunCpu = function () {
 		/// <summary>
 		/// Plānotāja darbības viena cikla laikā
@@ -21,7 +26,7 @@
 			return false;
 		}
 		
-		if (usedTime > 4) {
+		if (usedTime > timeQuantum - 1) {
 			this._availableProcessList.push(this._availableProcessList[0]);
 			this._availableProcessList.splice(0, 1);
 			usedTime = 0;

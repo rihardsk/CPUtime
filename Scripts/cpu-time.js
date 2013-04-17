@@ -2,13 +2,14 @@
 	// kad DOM ielādēts, pievienojam event listeneri pogai
 	var scheduler;
 	$(":button").click(function () {
+		var kvants = $("#kvants").val();
 		//if (!scheduler) {
 			if (this.id == "runButtonFCFS") { scheduler = new fcfs();}
 			else if (this.id == "runButtonSJF") { scheduler = new sjf();}
 			else if (this.id == "runButtonSRTF") { scheduler = new srtf();}
 			else if (this.id == "runButtonPrior") { scheduler = new Prior();}
 			else if (this.id == "runButtonPriorN") { scheduler = new PriorN();}
-			else if (this.id == "runButtonRR") { scheduler = new rr();}
+			else if (this.id == "runButtonRR") { scheduler = new rr(kvants);}
 		//}
 		var text = $("#input").val();
 		var speed = $("#speed").val();
