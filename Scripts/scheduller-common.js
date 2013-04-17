@@ -1,4 +1,4 @@
-﻿var Process = function (name, length, startTime, priority, remainderContainer, runContainer) {
+﻿var Process = function (name, length, startTime, priority, remainderContainer, runContainer, color) {
 	/// <summary>
 	/// Procesa klase
 	/// </summary>
@@ -8,6 +8,7 @@
 	/// <param name="priority"> Procesa prioritāte </param>
 	/// <param name="remainderContainer"> DOM elements, kur attēlot palikušā laika stabiņu </param>
 	/// <param name="runContainer"> DOM elements, kur likt klāt izpildītā laika stabiņu </param>
+	/// <param name="color"> Krāsa, kādā būs procesa stabiņi </param>
 	this.Name = name;
 	this.Length = length;
 	this.RemaindingTime = length;
@@ -15,6 +16,7 @@
 	this.Priority = priority;
 	this.RemainderContainer = remainderContainer;
 	this.RunContainer = runContainer;
+	this.Color = color;
 	var _remainder = {};
 	var _runs = [];
 
@@ -24,6 +26,7 @@
 		/// Izveido palikušā laika stabiņu
 		/// </summary>
 		_remainder = $("<div class='bar " + this.Name + "' />").appendTo(this.RemainderContainer).get(0);
+		_remainder.style.backgroundColor = this.Color;
 		$(_remainder).width(getRemainderWidth(this.Length));
 	}
 
@@ -74,6 +77,7 @@
 
 		var run = $("<div class='run " + this.Name + "' />").appendTo(this.RunContainer).get(0);
 		$(run).width(getRunWidth(time));
+		run.style.backgroundColor = this.Color;
 		_runs.push({ element: run, time: time });
 
 		if (this.RemaindingTime == 0) {
@@ -136,6 +140,18 @@ var SchedullerCommon = function () {
 	var _idleProcess;
 	var _lastProcessName = "";
 	var _lastProcessN = "";
+	this._colors = [
+		"#DD1E2F",
+		"#EBB035",
+		"#06A2CB",
+		"#218559",
+		"#D0C6B1",
+		"#192823",
+		"#FF8F00",
+		"#5A8F29",
+		"#3C7DC4",
+		"#2B2B2B"
+	];
 
 	this.Initialize = function (processList) {
 		/// <summary>
@@ -182,7 +198,7 @@ var SchedullerCommon = function () {
 				continue;
 			}
 			var words = lines[i].split(" ");
-			var process = new Process(words[1], words[2], words[0], words[3], _remainderContainer, _runContainer);
+			var process = new Process(words[1], words[2], words[0], words[3], _remainderContainer, _runContainer, this._colors[i % this._colors.length]);
 			process.Initialize();
 			parsed.push(process);
 		}
