@@ -131,7 +131,7 @@ var SchedullerCommon = function () {
 	var _runContainer;
 	var _timer = {};
 	/// <var> Pagājušais laiks </var>
-	var_ticksPassed = 0;
+	this._ticksPassed = 0;
 	var _tickDuration = -1;
 	var _idleProcess;
 	var _lastProcessName = "";
