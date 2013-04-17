@@ -1,6 +1,6 @@
-﻿var sjf = function () {
+﻿var srtf = function () {
 	/// <summary>
-	/// Laika plānotājs ar shortest job first algoritmu (nepārtraucošais)
+	/// Laika plānotājs ar shortest job first algoritmu (pārtraucošais remaining time first - shortest)
 	/// </summary>
 
 	this.RunCpu = function () {
@@ -13,8 +13,8 @@
 		}
 
 		// sakārto nepieciešamajā secībā
-		this._availableProcessList.sort(function (a, b) { return a.Length == b.Length ? 
-			a.StartTime - b.StartTime : a.Length - b.Length});
+		this._availableProcessList.sort(function (a, b) { return a.RemaindingTime == b.RemaindingTime ? 
+			a.StartTime - b.StartTime : a.RemaindingTime - b.RemaindingTime});
 		
 		var result = this.RunProcess(0,1);
 
@@ -28,4 +28,4 @@
 }
 
 // mantojās no SchedullerCommon
-sjf.prototype = new SchedullerCommon();
+srtf.prototype = new SchedullerCommon();

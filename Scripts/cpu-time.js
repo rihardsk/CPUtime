@@ -5,6 +5,7 @@
 		//if (!scheduler) {
 			if (this.id == "runButtonFCFS") { scheduler = new fcfs();}
 			else if (this.id == "runButtonSJF") { scheduler = new sjf();}
+			else if (this.id == "runButtonSRTF") { scheduler = new srtf();}
 			else if (this.id == "runButtonPrior") { scheduler = new Prior();}
 			else if (this.id == "runButtonRR") { scheduler = new rr();}
 		//}
