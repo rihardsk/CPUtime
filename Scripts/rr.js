@@ -19,7 +19,7 @@
 			this.RunIdle(1);
 			return false;
 		}
-		
+		for (var i=0; i<processList.length; i++) alert(processList[i].Name);
 		for (var i=0; i<timeQuantum; i++ ){
 			var result = this.RunProcess(0,1);
 			if (result == "done") break;
