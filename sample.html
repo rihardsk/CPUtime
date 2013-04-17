@@ -27,20 +27,40 @@
 	<button type="button" id="runButtonPrior">Run Prior</button>
 	<button type="button" id="runButtonPriorN">Run PriorN</button>
 	<button type="button" id="runButtonRR">Run RR</button>
-	<div id="processList">
-		<div class="bar p1" style="background-color: rgb(221, 30, 47); width: 0px;"></div>
-		<div class="bar p2" style="background-color: rgb(235, 176, 53); width: 0px;"></div>
-		<div class="bar p3" style="background-color: rgb(6, 162, 203); width: 0px;"></div>
-		<div class="bar p4" style="background-color: rgb(33, 133, 89); width: 75px;"></div>
-		<div class="bar p5" style="background-color: rgb(208, 198, 177); width: 75px;"></div>
-		<div class="bar idle"></div>
-	</div>
-	<div id="progressBar">
-		<div class="run p1" style="width: 105px; background-color: rgb(221, 30, 47);"></div>
-		<div class="run p2" style="width: 60px; background-color: rgb(235, 176, 53);"></div>
-		<div class="run p3" style="width: 75px; background-color: rgb(6, 162, 203);"></div>
-		<div class="run idle" style="width: 30px;"></div>
-		<div class="run p4" style="width: 45px; background-color: rgb(33, 133, 89);"></div>
+	<div id="processBorder">
+		<div id="processList">
+			<div class="border p1" style="background-color: rgb(238, 143, 151); width: 30px;">
+				<div class="bar p1" style="background-color: rgb(221, 30, 47); width: 0px;"></div>
+			</div>
+			<div class="border p2" style="background-color: rgb(245, 216, 154); width: 45px;">
+				<div class="bar p2" style="background-color: rgb(235, 176, 53); width: 0px;"></div>
+			</div>
+			<div class="border p3" style="background-color: rgb(131, 209, 229); width: 15px;">
+				<div class="bar p3" style="background-color: rgb(6, 162, 203); width: 0px;"></div>
+			</div>
+			<div class="border p4" style="background-color: rgb(144, 194, 172); width: 75px;">
+				<div class="bar p4" style="background-color: rgb(33, 133, 89); width: 0px;"></div>
+			</div>
+			<div class="border p6" style="background-color: rgb(232, 227, 216); width: 30px;">
+				<div class="bar p6" style="background-color: rgb(208, 198, 177); width: 0px;"></div>
+			</div>
+			<div class="border p5" style="background-color: rgb(140, 147, 145); width: 15px;">
+				<div class="bar p5" style="background-color: rgb(25, 40, 35); width: 0px;"></div>
+			</div>
+			<div class="border idle" style="background-color: rgb(255, 255, 255);">
+				<div class="bar idle" style="background-color: rgb(255, 255, 255);"></div>
+			</div>
+		</div>
+		<div id="progressBar">
+			<div class="run p1" style="height: 30px; background-color: rgb(221, 30, 47);"></div>
+			<div class="run p2" style="height: 45px; background-color: rgb(235, 176, 53);"></div>
+			<div class="run p3" style="height: 15px; background-color: rgb(6, 162, 203);"></div>
+			<div class="run idle" style="height: 30px; background-color: rgb(255, 255, 255);"></div>
+			<div class="run p4" style="height: 75px; background-color: rgb(33, 133, 89);"></div>
+			<div class="run p5" style="height: 15px; background-color: rgb(25, 40, 35);"></div>
+			<div class="run p6" style="height: 30px; background-color: rgb(208, 198, 177);"></div>
+		</div>
+		<div style="clear: both;"></div>
 	</div>
 
 

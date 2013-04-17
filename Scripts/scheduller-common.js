@@ -58,7 +58,10 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 		/// <summary>
 		/// Izveido palikušā laika stabiņu
 		/// </summary>
+
 		_border = $("<div class='border " + this.Name + "' />").appendTo(this.RemainderContainer).get(0);
+		$("<div class='name'>" + this.Name + "</div>").appendTo(_border);
+
 		var rgb = hexToRgb(this.Color);
 		rgb.a = 0.5;
 		var white = hexToRgb("FFFFFF");
@@ -119,7 +122,7 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 		$(_remainder).width(getRemainderWidth(this.RemaindingTime));
 
 		var run = $("<div class='run " + this.Name + "' />").appendTo(this.RunContainer).get(0);
-		$(run).width(getRunWidth(time));
+		$(run).height(getRunWidth(time));
 		run.style.backgroundColor = this.Color;
 		_runs.push({ element: run, time: time });
 
@@ -152,7 +155,7 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 
 		var run = _runs[_runs.length - 1];
 		run.time += time;
-		$(run.element).width(getRunWidth(run.time));
+		$(run.element).height(getRunWidth(run.time));
 
 		if (this.RemaindingTime == 0) {
 			return "done";
@@ -220,7 +223,7 @@ var SchedullerCommon = function () {
 		for (var i = 0; i < this._processList.length; i++) {
 			this._incomingProcessList.push(this._processList[i]);
 		}
-		_idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer, "#FFFFFF");
+		_idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer, "#EEEEEE");
 		_idleProcess.Initialize();
 	};
 

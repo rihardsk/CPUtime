@@ -1,8 +1,12 @@
 ﻿.bar.idle{
     width:0px;
 }
-.bar,.run {
+.bar{
     height:20px;
+}
+
+.run {
+    width:20px;
 }
 
 .highlight {
@@ -12,4 +16,17 @@
     outline: none;
     border-color: #9ecaed;
     box-shadow: 0 0 10px #9ecaed;
+}
+
+#processList{
+    float:left;
+}
+
+#progressBar{
+    float:right;
+    margin-right:50px;
+}
+
+.name {
+	float:left;
 }
