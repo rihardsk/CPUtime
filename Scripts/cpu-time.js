@@ -1,22 +1,13 @@
 ﻿$(document).ready(function () {
 	// kad DOM ielādēts, pievienojam event listeneri pogai
 	var scheduler;
-	$("#runButtonFCFS").click(function () {
-		scheduler = new fcfs();
-		var text = $("#input").val();
-		var speed = $("#speed").val();
-		scheduler.Initialize(text);
-		scheduler.Start(speed);
-	});
-	$("#runButtonSJF").click(function () {
-		scheduler = new sjf();
-		var text = $("#input").val();
-		var speed = $("#speed").val();
-		scheduler.Initialize(text);
-		scheduler.Start(speed);
-	});
-	$("#runButtonPrior").click(function () {
-		scheduler = new Prior();
+	$(":button").click(function () {
+		if (!scheduler) {
+			if (this.id == "runButtonFCFS") { scheduler = new fcfs();}
+			else if (this.id == "runButtonSJF") { scheduler = new sjf();}
+			else if (this.id == "runButtonPrior") { scheduler = new Prior();}
+			else if (this.id == "runButtonRR") { scheduler = new rr();}
+		}
 		var text = $("#input").val();
 		var speed = $("#speed").val();
 		scheduler.Initialize(text);
