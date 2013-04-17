@@ -199,7 +199,7 @@ var SchedullerCommon = function () {
 		"#2B2B2B"
 	];
 
-	this.Initialize = function (processList) {
+	this.Initialize = function (count, nameList, timeList, comeInList, priorityList) {
 		/// <summary>
 		/// Ielasa procesu sarakstu, sagatavo procesu sarakstus un reseto laiku
 		/// </summary>
@@ -217,8 +217,12 @@ var SchedullerCommon = function () {
 		this._processList = [];
 		this._incomingProcessList = [];
 		this._availableProcessList = [];
-
-		this._processList = this.ParseProcessList(processList);
+		
+		for (var i = 0; i < count; i++) {
+			var process = new Process(nameList[i], timeList[i], comeInList[i], priorityList[i], _remainderContainer, _runContainer, this._colors[i % this._colors.length]);
+			process.Initialize();
+			this._processList.push(process);
+		}
 		this._processList.sort(function (a, b) { return a.StartTime - b.StartTime; });
 		for (var i = 0; i < this._processList.length; i++) {
 			this._incomingProcessList.push(this._processList[i]);
@@ -227,7 +231,7 @@ var SchedullerCommon = function () {
 		_idleProcess.Initialize();
 	};
 
-	this.ParseProcessList = function (input) {
+	/*this.ParseProcessList = function (input) {
 		/// <summary>
 		/// Pārsē tekstu par procesu sarakstu
 		/// </summary>
@@ -251,7 +255,7 @@ var SchedullerCommon = function () {
 
 		return parsed;
 	}
-
+*/
 	this.Start = function (tickDuration) {
 		/// <summary>
 		/// Sāk vai turpina darbināt procesoru

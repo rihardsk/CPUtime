@@ -30,3 +30,34 @@
 .name {
 	float:left;
 }
+
+body
+{
+    font-family:Gill Sans MT;
+    padding:10px;
+}
+fieldset
+{
+    border: solid 1px #000;
+    padding:10px;
+    display:block;
+    clear:both;
+    margin:5px 0px;
+}
+input.add
+{
+    float:right;
+}
+input.fieldname
+{
+    float:left;
+    clear:left;
+    display:block;
+    margin:5px;
+}
+select.fieldtype
+{
+    float:left;
+    display:block;
+    margin:5px;
+}

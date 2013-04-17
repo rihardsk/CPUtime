@@ -2,6 +2,7 @@
 	// kad DOM ielādēts, pievienojam event listeneri pogai
 	var scheduler;
 	$(":button").click(function () {
+		if(this.id != "add"){
 		var kvants = $("#kvants").val();
 		//if (!scheduler) {
 			if (this.id == "runButtonFCFS") { scheduler = new fcfs();}
@@ -11,10 +12,14 @@
 			else if (this.id == "runButtonPriorN") { scheduler = new PriorN();}
 			else if (this.id == "runButtonRR") { scheduler = new rr(kvants);}
 		//}
-		var text = $("#input").val();
+		var count = $("#inputs div").length;
+		var name = $("input[name='name\\[\\]']").map(function(){return $(this).val();}).get();
+		var time = $("input[name='time\\[\\]']").map(function(){return $(this).val();}).get();
+		var comein = $("input[name='come-in\\[\\]']").map(function(){return $(this).val();}).get();
+		var priority = $("input[name='priority\\[\\]']").map(function(){return $(this).val();}).get();
 		var speed = $("#speed").val();
-		scheduler.Initialize(text);
-		scheduler.Start(speed);
+		scheduler.Initialize(count, name, time, comein, priority);
+		scheduler.Start(speed);}
 	});
 
 	var mouseEnter = function () {
