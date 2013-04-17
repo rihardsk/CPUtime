@@ -7,6 +7,7 @@
 			else if (this.id == "runButtonSJF") { scheduler = new sjf();}
 			else if (this.id == "runButtonSRTF") { scheduler = new srtf();}
 			else if (this.id == "runButtonPrior") { scheduler = new Prior();}
+			else if (this.id == "runButtonPriorN") { scheduler = new PriorN();}
 			else if (this.id == "runButtonRR") { scheduler = new rr();}
 		//}
 		var text = $("#input").val();

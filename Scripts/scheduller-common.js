@@ -135,6 +135,7 @@ var SchedullerCommon = function () {
 	var _tickDuration = -1;
 	var _idleProcess;
 	var _lastProcessName = "";
+	var _lastProcessN = "";
 
 	this.Initialize = function (processList) {
 		/// <summary>
@@ -232,7 +233,12 @@ var SchedullerCommon = function () {
 		}
 
 		var result = this.RunCpu();
-
+		
+		if (this._availableProcessList.length > 0)
+			this._lastProcessN = this._availableProcessList[0].Name
+		else
+			this._lastProcessN = "";
+		
 		// pārvieto visus pabeigušos procesus
 		for (var i = 0; i < this._availableProcessList.length; i++) {
 			var process = this._availableProcessList[i];
