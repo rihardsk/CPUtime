@@ -6,9 +6,9 @@
 }
 
 .highlight {
-    transform: scale(1,1.2);
-    -ms-transform: scale(1,1.2); /* IE 9 */
-    -webkit-transform: scale(1,1.2); /* Safari and Chrome */
+    transform: scale(1.2,1.2);
+    -ms-transform: scale(1.2,1.2); /* IE 9 */
+    -webkit-transform: scale(1.2,1.2); /* Safari and Chrome */
     outline: none;
     border-color: #9ecaed;
     box-shadow: 0 0 10px #9ecaed;

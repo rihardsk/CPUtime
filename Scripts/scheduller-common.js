@@ -1,4 +1,37 @@
-﻿var Process = function (name, length, startTime, priority, remainderContainer, runContainer, color) {
+﻿function hexToRgb(hex) {
+	// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+	var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+	hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+		return r + r + g + g + b + b;
+	});
+
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
+}
+
+function rgbToHex(r, g, b) {
+	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function padRgba(r, g, b, a) {
+	return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+}
+
+function RgbaToRgb(RGBA, bg) {
+	var RGB = {};
+	alpha = 1 - RGBA.a;
+	RGB.r = Math.round((RGBA.a * (RGBA.r / 255) + (alpha * (bg.r / 255))) * 255);
+	RGB.g = Math.round((RGBA.a * (RGBA.g / 255) + (alpha * (bg.g / 255))) * 255);
+	RGB.b = Math.round((RGBA.a * (RGBA.b / 255) + (alpha * (bg.b / 255))) * 255);
+
+	return RGB;
+}
+
+var Process = function (name, length, startTime, priority, remainderContainer, runContainer, color) {
 	/// <summary>
 	/// Procesa klase
 	/// </summary>
@@ -19,14 +52,25 @@
 	this.Color = color;
 	var _remainder = {};
 	var _runs = [];
+	var _border = {};
 
 	this.Initialize = function () {
 		/// <summary>
 		/// Izveido palikušā laika stabiņu
 		/// </summary>
-		_remainder = $("<div class='bar " + this.Name + "' />").appendTo(this.RemainderContainer).get(0);
+		_border = $("<div class='border " + this.Name + "' />").appendTo(this.RemainderContainer).get(0);
+		var rgb = hexToRgb(this.Color);
+		rgb.a = 0.5;
+		var white = hexToRgb("FFFFFF");
+		var mixed = RgbaToRgb(rgb, white);
+
+		_border.style.backgroundColor = rgbToHex(mixed.r, mixed.g, mixed.b);
+		_remainder = $("<div class='bar " + this.Name + "' />").appendTo(_border).get(0);
 		_remainder.style.backgroundColor = this.Color;
+		
+
 		$(_remainder).width(getRemainderWidth(this.Length));
+		$(_border).width(getRemainderWidth(this.Length));
 	}
 
 	var getRemainderWidth = function (time) {
@@ -176,7 +220,7 @@ var SchedullerCommon = function () {
 		for (var i = 0; i < this._processList.length; i++) {
 			this._incomingProcessList.push(this._processList[i]);
 		}
-		_idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer);
+		_idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer, "#FFFFFF");
 		_idleProcess.Initialize();
 	};
 

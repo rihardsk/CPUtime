@@ -19,14 +19,14 @@
 	var mouseEnter = function () {
 		var myClass = $(this).attr("class");
 		var classes = myClass.split(" ");
-		$("." + classes[1]).addClass("highlight");
+		$("." + classes[1] + ":not(.bar)").addClass("highlight");
 	};
 	var mouseLeave = function () {
 		var myClass = $(this).attr("class");
 		var classes = myClass.split(" ");
-		$("." + classes[1]).removeClass("highlight");
+		$("." + classes[1] + ":not(.bar)").removeClass("highlight");
 	};
 
-	$("#processList,#progressBar").on("mouseenter", ".bar,.run", mouseEnter);
-	$("#processList,#progressBar").on("mouseleave", ".bar,.run", mouseLeave);
+	$("#processList,#progressBar").on("mouseenter", ".border,.run", mouseEnter);
+	$("#processList,#progressBar").on("mouseleave", ".border,.run", mouseLeave);
 });
