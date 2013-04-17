@@ -39,7 +39,7 @@
 		if (this.Name == "idle") {
 			return 0;
 		}
-		return time;
+		return time*15;
 	}
 
 	var getRunWidth = function (time) {
@@ -51,7 +51,7 @@
 		if (this.Name == "idle") {
 			return 0;
 		}
-		return time;
+		return time*15;
 	}
 
 	this.Run = function (time) {
