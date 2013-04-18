@@ -27,7 +27,7 @@
 	padding:20px 0px 0px 20px;
 }
 
-#progressBar {
+#progressWrap {
 	float: left;
 	padding:20px 0px 0px 0px;
 
@@ -35,6 +35,20 @@
 	transform: rotate(30deg);
 	-ms-transform: rotate(30deg); /* IE 9 */
 	-webkit-transform: rotate(30deg); /* Safari and Chrome */
+}
+
+#progressBar,#ruler {
+	float: left;
+}
+
+#progressBar {
+	margin-left:50px
+}
+
+.ruler.unit {
+	border-bottom: 1pt solid black;
+	border-left: 2pt solid black;
+	padding-left: 7px;
 }
 
 .name {

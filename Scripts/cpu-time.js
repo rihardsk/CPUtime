@@ -28,7 +28,10 @@
 		var comein = $("input[name='come-in\\[\\]']").map(function(){return $(this).val();}).get();
 		var priority = $("input[name='priority\\[\\]']").map(function(){return $(this).val();}).get();
 		var speed = $("#speed").val();
-		scheduler.Initialize(count, name, time, comein, priority);
+
+		var text = "0 p1 2 2\n1 p2 3 1\n1 p3 1 2\n8 p4 5 3\n10 p6 2 2\n10 p5 1 1";
+
+		scheduler.Initialize2(text);
 		scheduler.Start(speed);
 		}
 		}

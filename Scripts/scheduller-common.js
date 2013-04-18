@@ -179,6 +179,7 @@ var SchedullerCommon = function () {
 	this._finishedProcessList = [];
 	var _remainderContainer;
 	var _runContainer;
+	var _rulerContainer;
 	var _statisticsContainer;
 	var _timer = {};
 	/// <var> Pagājušais laiks </var>
@@ -213,11 +214,14 @@ var SchedullerCommon = function () {
 		_remainderContainer = $("#processList").get(0);
 		_runContainer = $("#progressBar").get(0);
 		_statisticsContainer = $("#statistics").get(0);
+		_rulerContainer = $("#ruler").get(0);
 
 		// clean up
 		$(_remainderContainer).empty();
 		$(_runContainer).empty();
 		$(_statisticsContainer).empty();
+		$(_rulerContainer).empty();
+		
 		$('<div id="firstDummy" class="run"></div>').appendTo(_runContainer);
 		this._ticksPassed = 0;
 		this._processList = [];
@@ -237,7 +241,41 @@ var SchedullerCommon = function () {
 		_idleProcess.Initialize();
 	};
 
-	/*this.ParseProcessList = function (input) {
+	this.Initialize2 = function (processList) {
+		/// <summary>
+		/// Ielasa procesu sarakstu, sagatavo procesu sarakstus un reseto laiku
+		/// </summary>
+		/// <param name="processList">
+		/// Teksts - procesu saraksts.
+		/// Rindiņas formāts - [ierašanās laiks] [nosaukums] [izpildes laiks] [prioritāte]
+		/// </param>
+		_remainderContainer = $("#processList").get(0);
+		_runContainer = $("#progressBar").get(0);
+		_statisticsContainer = $("#statistics").get(0);
+		_rulerContainer = $("#ruler").get(0);
+
+		// clean up
+		$(_remainderContainer).empty();
+		$(_runContainer).empty();
+		$(_statisticsContainer).empty();
+		$(_rulerContainer).empty();
+
+		$('<div id="firstDummy" class="run"></div>').appendTo(_runContainer);
+		this._ticksPassed = 0;
+		this._processList = [];
+		this._incomingProcessList = [];
+		this._availableProcessList = [];
+
+		this._processList = this.ParseProcessList(processList);
+		this._processList.sort(function (a, b) { return a.StartTime - b.StartTime; });
+		for (var i = 0; i < this._processList.length; i++) {
+			this._incomingProcessList.push(this._processList[i]);
+		}
+		_idleProcess = new Process("idle", Infinity, 0, -1, _remainderContainer, _runContainer, "#EEEEEE");
+		_idleProcess.Initialize();
+	};
+
+	this.ParseProcessList = function (input) {
 		/// <summary>
 		/// Pārsē tekstu par procesu sarakstu
 		/// </summary>
@@ -261,7 +299,7 @@ var SchedullerCommon = function () {
 
 		return parsed;
 	}
-*/
+
 	this.Start = function (tickDuration) {
 		/// <summary>
 		/// Sāk vai turpina darbināt procesoru
@@ -386,11 +424,14 @@ var SchedullerCommon = function () {
 		/// true - process darbojās, bet nebeidza darbu,
 		/// false - process nevarēja izpildīties
 		/// </returns>
+		this.AddTimeAxis(time);
+
 		var process = this._availableProcessList[index];
 		if (_lastProcess && _lastProcess.Name == process.Name) {
 			return process.Continue(time);
 		}
 		_lastProcess = process;
+
 		return process.Run(time);
 	}
 
@@ -400,16 +441,44 @@ var SchedullerCommon = function () {
 		/// </summary>
 		/// <param name="time"> Izpildes laiks </param>
 		/// <returns type="bool"> Vienmēr true </returns>
+		this.AddTimeAxis(time);
+
 		if (_lastProcess && _lastProcess.Name == "idle") {
 			return _idleProcess.Continue(time);
 		}
 		_lastProcess = _idleProcess;
+
 		return _idleProcess.Run(time);
 	}
 
 	this.GetStatistics = function () {
 		for (var i = 0; i < this._processList.length; i++) {
 
+		}
+	}
+
+	// jābūt tādai pašai kā procesa funkcijai.. man slinkums
+	var getRunWidth = function (time) {
+		/// <summary>
+		/// Pārvērš izpildes laiku izpildītā laika stabiņa garumā
+		/// </summary>
+		/// <param name="time"> Izpildes laiks </param>
+		/// <returns type="int"> Stabiņa garums pikseļos </returns>
+		
+		return time*24;
+	}
+
+	this.AddTimeAxis = function (time) {
+		/// <summary>
+		/// Pieliek laika asij klāt iedaļas
+		/// </summary>
+		/// <param name="time">Iedaļus skaits, ko pielikt</param>
+
+		for (var i = 0; i < time; i++) {
+			var ticks = (this._ticksPassed + i);
+			ticks % 5 == 0 ? ticks = ticks : ticks = "";
+			var unit = $("<div class='ruler unit'>" + ticks + "</div>").appendTo(_rulerContainer).get(0);
+			$(unit).height(getRunWidth(time));
 		}
 	}
 }
