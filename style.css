@@ -34,7 +34,7 @@
 body
 {
     font-family:Gill Sans MT;
-    padding:10px;
+    padding:10px 100px 10px 200px;
 }
 fieldset
 {
@@ -42,22 +42,39 @@ fieldset
     padding:10px;
     display:block;
     clear:both;
-    margin:5px 0px;
+    margin:25px 20px 0px 0px;
 }
-input.add
-{
-    float:right;
-}
-input.fieldname
+input.inputRow
 {
     float:left;
     clear:left;
     display:block;
-    margin:5px;
+    margin:10px;
 }
-select.fieldtype
+legend
 {
-    float:left;
-    display:block;
-    margin:5px;
+    padding:0px 10px;
+    background:black;
+    color:#FFF;
+}
+input{
+	margin:1px 20px 1px 1px;
+}
+h1
+{
+	font-size:200%;
+}
+p
+{
+	line-height:50%;
+}
+#param{
+	margin: 30px 0px 10px 0px
+}
+button, input.add{
+	background:black;
+	color:white;
+}
+#buttons{
+	margin: 0px 0px 30px 0px
 }
