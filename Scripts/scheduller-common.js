@@ -85,7 +85,7 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 		if (this.Name == "idle") {
 			return 0;
 		}
-		return time*15;
+		return time*25;
 	}
 
 	var getRunWidth = function (time) {
@@ -97,7 +97,7 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 		if (this.Name == "idle") {
 			return 0;
 		}
-		return time*15;
+		return time*25;
 	}
 
 	this.Run = function (time) {
@@ -345,7 +345,12 @@ var SchedullerCommon = function () {
 			}
 		}
 
-		$(bubble).append(process.Name + " ");
+		if ($(bubble).is(':empty')) {
+			$(bubble).append("T = " + time + ": " + process.Name);
+		}
+		else {
+			$(bubble).append(" " + process.Name);
+		}
 
 		_lastSpeechBubbleTime = time;
 	}
