@@ -1,17 +1,18 @@
 ﻿$(document).ready(function () {
 	// kad DOM ielādēts, pievienojam event listeneri pogai
 	var scheduler;
-	var ready=true;
+	var isready;
 	$(":button").click(function () {
 		if(this.id != "add"){
-		if (! $("input[type=text]").each(function(){
+		isready = true;
+		$("input[type=text]").each(function(){
 			if( $(this).val().length == 0 ) {
 				alert("Nav aizpildīti visi parametru lauki!");
-				ready = false;
+				isready = false;
 				return false;
 			}
-		})) 
-		if(ready){
+		})
+		if(isready){
 		var kvants = $("#kvants").val();
 		//if (!scheduler) {
 			if (this.id == "runButtonFCFS") { scheduler = new fcfs();}
