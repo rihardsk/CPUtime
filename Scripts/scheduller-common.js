@@ -215,6 +215,7 @@ var SchedullerCommon = function () {
 		// clean up
 		$(_remainderContainer).empty();
 		$(_runContainer).empty();
+		$('<div id="firstDummy" class="run"></div>').appendTo(_runContainer);
 		this._ticksPassed = 0;
 		this._processList = [];
 		this._incomingProcessList = [];
@@ -330,27 +331,18 @@ var SchedullerCommon = function () {
 		/// <param name="process">Process, ko likt burbulī</param>
 		var bubble;
 		if (time == _lastSpeechBubbleTime) {
-			bubble = _speechBubbles[_speechBubbles.length-1]
+			bubble = _speechBubbles[_speechBubbles.length - 1]
 		}
-		else {/*
-			for (var i = 0; i < this._processList.length; i++) {
-				var p = _prothis._processList[i];
-				for (var j = 0; j < length; j++) {
-
-				}
-			}*/
-
+		else {
 			if (_lastProcess && _lastProcess._runs.length > 0) {
 				var lastRun = _lastProcess._runs[_lastProcess._runs.length - 1];
-				//bubble = $("<div class='triangle-border left'/>").appendTo(lastRun.element).get(0);
 				bubble = $("<div class='bubble'/>").appendTo(lastRun.element).get(0);
 				_speechBubbles.push(bubble);
 				_lastProcess = undefined; // nodrošina, ka nākamajam procesam tiks izveidots jauns divs pēc nupat pievienotā
 			}
-				/*bubble = $("<div class='bubble'/>").appendTo(_runContainer).get(0);
-				_speechBubbles.push(bubble);
-				_lastProcess = undefined; // nodrošina, ka nākamajam procesam tiks izveidots jauns divs pēc nupat pievienotā
-			*/
+			else { // nav vēl neviens process darbojies, nav kam piekabināt
+				bubble = $("<div class='bubble first'/>").appendTo("#firstDummy").get(0);
+			}
 		}
 
 		$(bubble).append(process.Name + " ");
