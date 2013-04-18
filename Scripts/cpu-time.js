@@ -1,8 +1,17 @@
 ﻿$(document).ready(function () {
 	// kad DOM ielādēts, pievienojam event listeneri pogai
 	var scheduler;
+	var ready=true;
 	$(":button").click(function () {
 		if(this.id != "add"){
+		if (! $("input[type=text]").each(function(){
+			if( $(this).val().length == 0 ) {
+				alert("Nav aizpildīti visi parametru lauki!");
+				ready = false;
+				return false;
+			}
+		})) 
+		if(ready){
 		var kvants = $("#kvants").val();
 		//if (!scheduler) {
 			if (this.id == "runButtonFCFS") { scheduler = new fcfs();}
@@ -19,7 +28,9 @@
 		var priority = $("input[name='priority\\[\\]']").map(function(){return $(this).val();}).get();
 		var speed = $("#speed").val();
 		scheduler.Initialize(count, name, time, comein, priority);
-		scheduler.Start(speed);}
+		scheduler.Start(speed);
+		}
+		}
 	});
 
 	var mouseEnter = function () {
