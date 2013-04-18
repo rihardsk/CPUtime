@@ -179,6 +179,7 @@ var SchedullerCommon = function () {
 	this._finishedProcessList = [];
 	var _remainderContainer;
 	var _runContainer;
+	var _statisticsContainer;
 	var _timer = {};
 	/// <var> Pagājušais laiks </var>
 	this._ticksPassed = 0;
@@ -211,10 +212,12 @@ var SchedullerCommon = function () {
 		/// </param>
 		_remainderContainer = $("#processList").get(0);
 		_runContainer = $("#progressBar").get(0);
+		_statisticsContainer = $("#statistics").get(0);
 
 		// clean up
 		$(_remainderContainer).empty();
 		$(_runContainer).empty();
+		$(_statisticsContainer).empty();
 		$('<div id="firstDummy" class="run"></div>').appendTo(_runContainer);
 		this._ticksPassed = 0;
 		this._processList = [];
@@ -398,5 +401,11 @@ var SchedullerCommon = function () {
 		}
 		_lastProcess = _idleProcess;
 		return _idleProcess.Run(time);
+	}
+
+	this.GetStatistics = function () {
+		for (var i = 0; i < this._processList.length; i++) {
+
+		}
 	}
 }
