@@ -18,17 +18,59 @@
 	<script src="Scripts/priorN.js"></script>
 	<script src="Scripts/rr.js"></script>
 	<script src="Scripts/cpu-time.js"></script>
+	<script>
+$(document).ready(function() {
+    $("#add").click(function() {
+        var intId = $("#inputs div").length + 1;
+        var inputRow = $("<div class=\"inputRow\" id=\"row" + intId + "\"/>");
+        var fName = $("<input type=\"text\" id=\"name"+intId+"\" name=\"name[]\" size=\"5\" value=\"P"+intId+"\"/>");
+        var fComeIn = $("<input type=\"text\" id=\"come-in"+intId+"\" name=\"come-in[]\" size=\"5\"/>");
+		var fTime = $("<input type=\"text\" id=\"time"+intId+"\" name=\"time[]\" size=\"5\"/>");
+		var fPrior = $("<input type=\"text\" id=\"priority"+intId+"\"  name=\"priority[]\" size=\"5\"/>");
+        inputRow.append(fName);
+		inputRow.append(fComeIn);
+		inputRow.append(fTime);
+		inputRow.append(fPrior);
+        $("#inputs").append(inputRow);
+    });
+});
+</script>
 </head>
 <body>
-	<textarea id="input" rows="10" cols="30"></textarea>
-	<input type="text" id="speed" value="1000" />
+	<h1>Praktiskais darbs kursā „Operētājsistēmu koncepcijas” </h1>
+	<div id="task">
+	<p>Uzdevums</p> 
+	<p>Izveidot kādu operētājsistēmas komponentes, funkcionalitātes vai algoritma vizualizāciju.</p> 
+	<p>1. CPU plānošanas vizualizācija dažādiem plānošanas algoritmiem (First-come, first-served; 
+Shortest job first, Round robin, Priority).</p>
+</div>
+	<form id="titles">
+	<fieldset id="inputs">
+	<legend>Nosaukums - Ierašanās laiks - Ilgums - Prioritāte</legend>
+	<div class="inputRow" id="row1">
+		<input type="text" id="name1" name="name[]" size="5" value="P1"/>
+		<input type="text" id="come-in1" name="come-in[]" size="5"/>
+		<input type="text" id="time1" name="time[]" size="5"/>
+		<input type="text" id="priority1" name="priority[]" size="5"/>
+	</div>
+	</fieldset>
+	<input type="button" value="Add a field" class="add" id="add" />
+	<div id="param">
+	<form id="params">
+	Vienas procesora takts izpildes ātrums(ms):
+	<input type="text" id="speed" value="1000" size="3"/>
+	Laika kvants Round Robin algoritmam:
+	<input type="text" id="kvants" value="5" size="3"/>
+	</form>
+	</div>
+	<div id="buttons">
 	<button type="button" id="runButtonFCFS">Run FCFS</button>
 	<button type="button" id="runButtonSJF">Run SJF</button>
 	<button type="button" id="runButtonSRTF">Run ShortestRemainingTimeFirst</button>
 	<button type="button" id="runButtonPrior">Run Prior</button>
 	<button type="button" id="runButtonPriorN">Run PriorN</button>
-	<input type="text" id="kvants" value="5" size="3"/>
 	<button type="button" id="runButtonRR">Run RR</button>
+	</div>
 	<div id="processBorder">
 		<div id="processList"></div>
 		<div id="progressBar"></div>

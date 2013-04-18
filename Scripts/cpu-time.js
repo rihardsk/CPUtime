@@ -1,7 +1,18 @@
 ﻿$(document).ready(function () {
 	// kad DOM ielādēts, pievienojam event listeneri pogai
 	var scheduler;
+	var isready;
 	$(":button").click(function () {
+		if(this.id != "add"){
+		isready = true;
+		$("input[type=text]").each(function(){
+			if( $(this).val().length == 0 ) {
+				alert("Nav aizpildīti visi parametru lauki!");
+				isready = false;
+				return false;
+			}
+		})
+		if(isready){
 		var kvants = $("#kvants").val();
 		//if (!scheduler) {
 			if (this.id == "runButtonFCFS") { scheduler = new fcfs();}
@@ -11,10 +22,16 @@
 			else if (this.id == "runButtonPriorN") { scheduler = new PriorN();}
 			else if (this.id == "runButtonRR") { scheduler = new rr(kvants);}
 		//}
-		var text = $("#input").val();
+		var count = $("#inputs div").length;
+		var name = $("input[name='name\\[\\]']").map(function(){return $(this).val();}).get();
+		var time = $("input[name='time\\[\\]']").map(function(){return $(this).val();}).get();
+		var comein = $("input[name='come-in\\[\\]']").map(function(){return $(this).val();}).get();
+		var priority = $("input[name='priority\\[\\]']").map(function(){return $(this).val();}).get();
 		var speed = $("#speed").val();
-		scheduler.Initialize(text);
+		scheduler.Initialize(count, name, time, comein, priority);
 		scheduler.Start(speed);
+		}
+		}
 	});
 
 	var mouseEnter = function () {

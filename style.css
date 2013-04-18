@@ -85,3 +85,51 @@
 	position: absolute;
 	padding: 4px 0px 0px 8px;
 }
+
+body
+{
+    font-family:Gill Sans MT;
+    padding:10px 100px 10px 200px;
+}
+fieldset
+{
+    border: solid 1px #000;
+    padding:10px;
+    display:block;
+    clear:both;
+    margin:25px 20px 0px 0px;
+}
+input.inputRow
+{
+    float:left;
+    clear:left;
+    display:block;
+    margin:10px;
+}
+legend
+{
+    padding:0px 10px;
+    background:black;
+    color:#FFF;
+}
+input{
+	margin:1px 20px 1px 1px;
+}
+h1
+{
+	font-size:200%;
+}
+p
+{
+	line-height:50%;
+}
+#param{
+	margin: 30px 0px 10px 0px
+}
+button, input.add{
+	background:black;
+	color:white;
+}
+#buttons{
+	margin: 0px 0px 30px 0px
+}
