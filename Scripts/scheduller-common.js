@@ -51,7 +51,7 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 	this.RunContainer = runContainer;
 	this.Color = color;
 	var _remainder = {};
-	var _runs = [];
+	this._runs = [];
 	var _border = {};
 
 	this.Initialize = function () {
@@ -124,7 +124,7 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 		var run = $("<div class='run " + this.Name + "' />").appendTo(this.RunContainer).get(0);
 		$(run).height(getRunWidth(time));
 		run.style.backgroundColor = this.Color;
-		_runs.push({ element: run, time: time });
+		this._runs.push({ element: run, time: time });
 
 		if (this.RemaindingTime == 0) {
 			return "done";
@@ -153,7 +153,7 @@ var Process = function (name, length, startTime, priority, remainderContainer, r
 
 		$(_remainder).width(getRemainderWidth(this.RemaindingTime));
 
-		var run = _runs[_runs.length - 1];
+		var run = this._runs[this._runs.length - 1];
 		run.time += time;
 		$(run.element).height(getRunWidth(run.time));
 
@@ -184,8 +184,10 @@ var SchedullerCommon = function () {
 	this._ticksPassed = 0;
 	var _tickDuration = -1;
 	var _idleProcess;
-	var _lastProcessName = "";
+	var _lastProcess = undefined;
 	var _lastProcessN = "";
+	var _lastSpeechBubbleTime = -1;
+	var _speechBubbles = [];
 	this._colors = [
 		"#DD1E2F",
 		"#EBB035",
@@ -291,6 +293,8 @@ var SchedullerCommon = function () {
 				this._incomingProcessList.splice(i, 1);
 				i--; // nākamajiem elementiem samazinās indekss
 				this._availableProcessList.push(process);
+
+				AddBubble(this._ticksPassed, process);
 			}
 		}
 
@@ -318,6 +322,42 @@ var SchedullerCommon = function () {
 		this._ticksPassed++;
 	}
 
+	var AddBubble = function (time, process) {
+		/// <summary>
+		/// Pievieno burbuli ar procesa vārdu norādītajā laikā procesu stabiņā
+		/// </summary>
+		/// <param name="time">Laiks, kurā pievienot burbuli</param>
+		/// <param name="process">Process, ko likt burbulī</param>
+		var bubble;
+		if (time == _lastSpeechBubbleTime) {
+			bubble = _speechBubbles[_speechBubbles.length-1]
+		}
+		else {/*
+			for (var i = 0; i < this._processList.length; i++) {
+				var p = _prothis._processList[i];
+				for (var j = 0; j < length; j++) {
+
+				}
+			}*/
+
+			if (_lastProcess && _lastProcess._runs.length > 0) {
+				var lastRun = _lastProcess._runs[_lastProcess._runs.length - 1];
+				//bubble = $("<div class='triangle-border left'/>").appendTo(lastRun.element).get(0);
+				bubble = $("<div class='bubble'/>").appendTo(lastRun.element).get(0);
+				_speechBubbles.push(bubble);
+				_lastProcess = undefined; // nodrošina, ka nākamajam procesam tiks izveidots jauns divs pēc nupat pievienotā
+			}
+				/*bubble = $("<div class='bubble'/>").appendTo(_runContainer).get(0);
+				_speechBubbles.push(bubble);
+				_lastProcess = undefined; // nodrošina, ka nākamajam procesam tiks izveidots jauns divs pēc nupat pievienotā
+			*/
+		}
+
+		$(bubble).append(process.Name + " ");
+
+		_lastSpeechBubbleTime = time;
+	}
+
 	this.RunCpu = function () {
 		/// <summary>
 		/// Plānotāja darbības viena cikla laikā
@@ -343,10 +383,10 @@ var SchedullerCommon = function () {
 		/// false - process nevarēja izpildīties
 		/// </returns>
 		var process = this._availableProcessList[index];
-		if (_lastProcessName == process.Name) {
+		if (_lastProcess && _lastProcess.Name == process.Name) {
 			return process.Continue(time);
 		}
-		_lastProcessName = process.Name;
+		_lastProcess = process;
 		return process.Run(time);
 	}
 
@@ -356,10 +396,10 @@ var SchedullerCommon = function () {
 		/// </summary>
 		/// <param name="time"> Izpildes laiks </param>
 		/// <returns type="bool"> Vienmēr true </returns>
-		if (_lastProcessName == "idle") {
+		if (_lastProcess && _lastProcess.Name == "idle") {
 			return _idleProcess.Continue(time);
 		}
-		_lastProcessName = "idle";
+		_lastProcess = _idleProcess;
 		return _idleProcess.Run(time);
 	}
 }
